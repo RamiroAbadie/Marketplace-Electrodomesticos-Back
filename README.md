@@ -30,7 +30,4 @@ src └── main └── java/com/uade/tpo/ ├── marketplace/ │ ├�
    Asegurate de tener creada una base llamada mi_base o el nombre que definas en el .properties.
 
 ## 🧑‍💻 Autores
-Ramiro Abadie
-Tobias Choclin
-Valentino Ariotti
-Patricio Assad
+Ramiro Abadie, Tobias Choclin, Valentino Ariotti, Patricio Assad
