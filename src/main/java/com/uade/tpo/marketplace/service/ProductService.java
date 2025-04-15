@@ -8,15 +8,19 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ProductService {
-    List<Product> getAllProducts();
+    public List<Product> getAllProducts();
 
-    List<Product> getAvailableProducts();
+    public List<Product> getAvailableProducts();
 
-    List<Product> getProductsByCategory(Long categoryId);
+    public List<Product> getProductsByCategory(Long categoryId);
 
-    List<Product> getProductsByPriceRange(BigDecimal min, BigDecimal max);
+    public List<Product> getProductsByPriceRange(BigDecimal min, BigDecimal max);
 
-    Product createProduct(String description, BigDecimal price, Integer stock, Category category);
+    public Product createProduct(String description, BigDecimal price, Integer stock, Category category);
     
-    Optional<Product> getProductById(Long id);
+    public Optional<Product> getProductById(Long id);
+
+    public void deleteProductById(Long id);
+
+    public Product save(Product product);
 }

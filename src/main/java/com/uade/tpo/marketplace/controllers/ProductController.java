@@ -66,7 +66,7 @@ public class ProductController {
     }
 
     // Crear un producto nuevo
-@PostMapping
+    @PostMapping
     public ResponseEntity<ProductResponse> createProduct(@RequestBody ProductRequest productRequest) {
         Optional<Category> categoryOpt = categoryRepository.findById(productRequest.getCategoryId());
         if (categoryOpt.isEmpty()) {
@@ -91,4 +91,48 @@ public class ProductController {
         return ResponseEntity.ok(response);
     }
 
+    // Eliminar un producto por su id
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
+        Optional<Product> product = productService.getProductById(id);
+        if (product.isEmpty()) {
+            return ResponseEntity.notFound().build(); // 404 Not Found
+        }
+
+        productService.deleteProductById(id);
+        return ResponseEntity.noContent().build(); // 204 No Content
+    }
+
+    // Actualizar producto por id
+    @PutMapping("/{id}")
+    public ResponseEntity<ProductResponse> updateProduct(@PathVariable Long id,
+                                                        @RequestBody ProductRequest productRequest) {
+        Optional<Product> existingProduct = productService.getProductById(id);
+        if (existingProduct.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Optional<Category> categoryOpt = categoryRepository.findById(productRequest.getCategoryId());
+        if (categoryOpt.isEmpty()) {
+            throw new CategoryNotFoundException();
+        }
+
+        Product updatedProduct = existingProduct.get();
+        updatedProduct.setDescription(productRequest.getDescription());
+        updatedProduct.setPrice(productRequest.getPrice());
+        updatedProduct.setStock(productRequest.getStock());
+        updatedProduct.setCategory(categoryOpt.get());
+
+        Product saved = productService.save(updatedProduct);
+
+        ProductResponse response = new ProductResponse(
+            saved.getId(),
+            saved.getDescription(),
+            saved.getPrice(),
+            saved.getStock(),
+            saved.getCategory().getDescription()
+        );
+
+        return ResponseEntity.ok(response);
+    }
 }
