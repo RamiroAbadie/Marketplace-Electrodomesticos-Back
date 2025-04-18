@@ -80,7 +80,8 @@ public class CategoriesController {
 
     // Actualizar el nombre de una categoria
     @PutMapping("/{categoryId}")
-    public ResponseEntity<CategoryResponse> updateCategory(@PathVariable Long categoryId, @RequestBody @Valid CategoryRequest request) {
+    public ResponseEntity<CategoryResponse> updateCategory(@PathVariable Long categoryId, 
+                                                @RequestBody @Valid CategoryRequest request) {
         Optional<Category> existingCategory = categoryService.getCategoryById(categoryId);
         if (existingCategory.isEmpty()) {
             throw new CategoryNotFoundException(); // 404 Not Found
