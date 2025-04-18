@@ -17,8 +17,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public User register(String name, String surname, String email, String password) {
         User user = new User();
-        user.setFirstName(name);
-        user.setLastName(surname);
+        user.setName(name);
+        user.setSurname(surname);
         user.setEmail(email);
         user.setPassword(password); // por ahora se esta guardando en texto plano
         user.setRole(Role.USER); // Aca definimos el rol, de forma interna aca en el serivce
@@ -52,8 +52,8 @@ public class UserServiceImpl implements UserService {
         }
 
         User user = userOpt.get();
-        user.setFirstName(name);
-        user.setLastName(surname);
+        user.setName(name);
+        user.setSurname(surname);
         user.setEmail(email);
 
         return userRepository.save(user);

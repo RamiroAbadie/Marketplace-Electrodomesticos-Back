@@ -74,6 +74,7 @@ public class ProductController {
     }
 
 
+
     // Crear un producto nuevo
     @PostMapping
     public ResponseEntity<ProductResponse> createProduct(@RequestBody @Valid ProductRequest productRequest) {
