@@ -60,10 +60,17 @@ public class ProductController {
     }
 
     // Filtrar por rango de precio
-    @GetMapping("/price")
+    @GetMapping("/price-range")
     public List<Product> getByPriceRange(@RequestParam BigDecimal min, @RequestParam BigDecimal max) {
         return productService.getProductsByPriceRange(min, max);
     }
+    // Filtrar por precios menores
+    @GetMapping("/price-less")
+    public List<Product> getByPriceLess(@RequestParam BigDecimal min) {
+        return productService.getProductsByPriceLess(min);
+    }
+
+
 
     // Crear un producto nuevo
     @PostMapping

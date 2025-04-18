@@ -19,7 +19,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> getAllProducts() {
-        // Estamos usando un método que ya viene implementado por Spring Data JPA
+        // Estamos usando un metodo que ya viene implementado por Spring Data JPA
         return productRepository.findAll();
     }
 
@@ -38,6 +38,10 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.findByPriceBetween(min, max);
     }
 
+    public List<Product> getProductsByPriceLess(BigDecimal min) {
+        return productRepository.findByPriceLessThan(min);
+    }
+
     @Override
     public Product createProduct(String description, BigDecimal price, Integer stock, Category category) {
         Product product = new Product();
@@ -47,24 +51,23 @@ public class ProductServiceImpl implements ProductService {
         product.setCategory(category);
         return productRepository.save(product);
     }
-
     
     @Override
     //Optional<T>	Evita errores por null. Te obliga a manejar el caso “no existe”
     public Optional<Product> getProductById(Long id) {
-        // Estamos usando un método que ya viene implementado por Spring Data JPA
+        // Estamos usando un metodo que ya viene implementado por Spring Data JPA
         return productRepository.findById(id);
     }
 
     @Override
     public void deleteProductById(Long id) {
-        // Estamos usando un método que ya viene implementado por Spring Data JPA
+        // Estamos usando un metodo que ya viene implementado por Spring Data JPA
         productRepository.deleteById(id);
     }
 
     @Override
     public Product save(Product product) {
-        // Estamos usando un método que ya viene implementado por Spring Data JPA
+        // Estamos usando un metodo que ya viene implementado por Spring Data JPA
         return productRepository.save(product);
     }
 }

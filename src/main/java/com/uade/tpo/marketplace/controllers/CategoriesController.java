@@ -61,11 +61,8 @@ public class CategoriesController {
     @PostMapping
     public ResponseEntity<CategoryResponse> createCategory(@RequestBody CategoryRequest categoryRequest)
             throws CategoryDuplicateException {
-
         Category result = categoryService.createCategory(categoryRequest.getDescription());
-
         CategoryResponse response = new CategoryResponse(result.getId(), result.getDescription());
-
         return ResponseEntity.created(URI.create("/api/categories/" + result.getId())).body(response);
     }
 
@@ -83,12 +80,9 @@ public class CategoriesController {
         if (existingCategory.isEmpty()) {
             throw new CategoryNotFoundException(); // 404 Not Found
         }
-
         Category category = existingCategory.get();
         category.setDescription(request.getDescription());
-
         Category updated = categoryService.save(category);
-
         CategoryResponse response = new CategoryResponse(updated.getId(), updated.getDescription());
         return ResponseEntity.ok(response);
     }

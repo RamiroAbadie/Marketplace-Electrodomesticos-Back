@@ -57,7 +57,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Category save(Category category) {
-        // Estamos usando un método que ya viene implementado por Spring Data JPA
+        // Estamos usando un metodo que ya viene implementado por Spring Data JPA
         return categoryRepository.save(category);
     }
 }

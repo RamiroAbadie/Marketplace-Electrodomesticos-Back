@@ -16,6 +16,8 @@ public interface ProductService {
 
     public List<Product> getProductsByPriceRange(BigDecimal min, BigDecimal max);
 
+    public List<Product> getProductsByPriceLess(BigDecimal min);
+
     public Product createProduct(String description, BigDecimal price, Integer stock, Category category);
     
     public Optional<Product> getProductById(Long id);
