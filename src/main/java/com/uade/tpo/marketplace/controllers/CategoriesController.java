@@ -10,6 +10,8 @@ import com.uade.tpo.marketplace.entity.dto.CategoryRequest;
 import com.uade.tpo.marketplace.entity.dto.CategoryResponse;
 import com.uade.tpo.marketplace.service.CategoryService;
 
+import jakarta.validation.Valid;
+
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -59,7 +61,7 @@ public class CategoriesController {
 
     //Crear categoria
     @PostMapping
-    public ResponseEntity<CategoryResponse> createCategory(@RequestBody CategoryRequest categoryRequest)
+    public ResponseEntity<CategoryResponse> createCategory(@RequestBody @Valid CategoryRequest categoryRequest)
             throws CategoryDuplicateException {
         Category result = categoryService.createCategory(categoryRequest.getDescription());
         CategoryResponse response = new CategoryResponse(result.getId(), result.getDescription());
@@ -75,7 +77,8 @@ public class CategoriesController {
 
     // Actualizar el nombre de una categoria
     @PutMapping("/{categoryId}")
-    public ResponseEntity<CategoryResponse> updateCategory(@PathVariable Long categoryId, @RequestBody CategoryRequest request) {
+    public ResponseEntity<CategoryResponse> updateCategory(@PathVariable Long categoryId, 
+                                                @RequestBody @Valid CategoryRequest request) {
         Optional<Category> existingCategory = categoryService.getCategoryById(categoryId);
         if (existingCategory.isEmpty()) {
             throw new CategoryNotFoundException(); // 404 Not Found
