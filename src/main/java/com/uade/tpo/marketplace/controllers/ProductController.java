@@ -6,6 +6,9 @@ import com.uade.tpo.marketplace.entity.dto.ProductResponse;
 import com.uade.tpo.exceptions.CategoryNotFoundException;
 import com.uade.tpo.marketplace.entity.Category;
 import com.uade.tpo.marketplace.service.ProductService;
+
+import jakarta.validation.Valid;
+
 import com.uade.tpo.marketplace.repository.CategoryRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,7 +70,7 @@ public class ProductController {
 
     // Crear un producto nuevo
     @PostMapping
-    public ResponseEntity<ProductResponse> createProduct(@RequestBody ProductRequest productRequest) {
+    public ResponseEntity<ProductResponse> createProduct(@RequestBody @Valid ProductRequest productRequest) {
         Optional<Category> categoryOpt = categoryRepository.findById(productRequest.getCategoryId());
         if (categoryOpt.isEmpty()) {
             throw new CategoryNotFoundException();
@@ -106,7 +109,7 @@ public class ProductController {
     // Actualizar producto por id
     @PutMapping("/{id}")
     public ResponseEntity<ProductResponse> updateProduct(@PathVariable Long id,
-                                                        @RequestBody ProductRequest productRequest) {
+                                                        @RequestBody @Valid ProductRequest productRequest) {
         Optional<Product> existingProduct = productService.getProductById(id);
         if (existingProduct.isEmpty()) {
             return ResponseEntity.notFound().build();
