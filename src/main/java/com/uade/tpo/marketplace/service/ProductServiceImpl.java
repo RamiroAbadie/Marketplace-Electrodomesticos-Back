@@ -2,6 +2,7 @@ package com.uade.tpo.marketplace.service;
 
 import com.uade.tpo.marketplace.entity.Product;
 import com.uade.tpo.marketplace.entity.Category;
+import com.uade.tpo.marketplace.repository.OrderItemRepository;
 import com.uade.tpo.marketplace.repository.ProductRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,11 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private ProductRepository productRepository;
+
+    // Se usa para bloquear el borrado de un producto si se encuentra en un Orden
+    @Autowired
+    private OrderItemRepository orderItemRepository;
+
 
     @Override
     public List<Product> getAllProducts() {
@@ -61,9 +67,15 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void deleteProductById(Long id) {
-        // Estamos usando un metodo que ya viene implementado por Spring Data JPA
+        Product product = productRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
+    
+        if (orderItemRepository.existsByProduct(product)) {
+            throw new RuntimeException("No se puede eliminar el producto porque ya fue comprado en una orden.");
+        }
+    
         productRepository.deleteById(id);
-    }
+    }    
 
     @Override
     public Product save(Product product) {
