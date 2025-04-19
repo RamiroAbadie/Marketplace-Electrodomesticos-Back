@@ -5,6 +5,19 @@ import lombok.Data;
 
 import java.util.List;
 
+/*
+{
+    id: 5
+    [
+        {id: 5,
+        description: "Samsung"
+        quantity: 2};
+        {id: 4
+        description; "Iphone"}
+    ]
+}
+*/
+
 @Data
 public class OrderRequest {
 
