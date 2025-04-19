@@ -46,7 +46,7 @@ public class OrderController {
         OrderResponse response = new OrderResponse(
             order.getId(),
             order.getUser().getId(),
-            order.getUser().getName(),
+            order.getUser().getFirstname(),
             itemResponses
         );
 
@@ -76,7 +76,7 @@ public class OrderController {
         OrderResponse response = new OrderResponse(
             order.getId(),
             order.getUser().getId(),
-            order.getUser().getName(),
+            order.getUser().getFirstname(),
             itemResponses
         );
 
