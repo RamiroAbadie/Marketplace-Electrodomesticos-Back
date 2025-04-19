@@ -28,6 +28,9 @@ public class SecurityConfig {
                                 .csrf(AbstractHttpConfigurer::disable)
                                 .authorizeHttpRequests(req -> req.requestMatchers("/api/v1/auth/**").permitAll()
                                                 .requestMatchers("/error/**").permitAll()
+                                                .requestMatchers("/api/auth/**").permitAll() // sacar
+                                                .requestMatchers("/api/categories/**").permitAll() // sacar
+                                                .requestMatchers("/{categoryId}/**").permitAll() // sacar
                                                 .requestMatchers("/categories/**").hasAnyAuthority(Role.USER.name())
                                                 .anyRequest()
                                                 .authenticated())
