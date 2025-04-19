@@ -2,7 +2,7 @@ package com.uade.tpo.marketplace.controllers;
 
 import com.uade.tpo.marketplace.entity.User;
 import com.uade.tpo.marketplace.entity.dto.LoginRequest;
-import com.uade.tpo.marketplace.entity.dto.RegisterRequest;
+import com.uade.tpo.marketplace.entity.dto.auth.RegisterRequest;
 import com.uade.tpo.marketplace.entity.dto.UpdateUserRequest;
 import com.uade.tpo.marketplace.entity.dto.UserResponse;
 import com.uade.tpo.marketplace.service.UserService;
@@ -21,8 +21,8 @@ public class UserController {
     @PostMapping("/register")
     public ResponseEntity<User> register(@RequestBody @Valid RegisterRequest request) {
         User user = userService.register(
-                request.getName(),
-                request.getSurname(),
+                request.getFirstname(),
+                request.getLastname(),
                 request.getEmail(),
                 request.getPassword()
         );
@@ -55,8 +55,8 @@ public class UserController {
         // Notar que no devuelve la contrasena ;)
         UserResponse response = new UserResponse(
             user.getId(),
-            user.getName(),
-            user.getSurname(),
+            user.getFirstName(),
+            user.getLastName(),
             user.getEmail(),
             user.getRole()
         );

@@ -8,8 +8,8 @@ import lombok.Data;
 @AllArgsConstructor
 public class UserResponse {
     private Long id;
-    private String name;
-    private String surname;
+    private String firstname;
+    private String lastname;
     private String email;
     private Role role;
 }
