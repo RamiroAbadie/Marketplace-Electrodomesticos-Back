@@ -55,8 +55,8 @@ public class UserController {
         // Notar que no devuelve la contrasena ;)
         UserResponse response = new UserResponse(
             user.getId(),
-            user.getFirstName(),
-            user.getLastName(),
+            user.getFirstname(),
+            user.getLastname(),
             user.getEmail(),
             user.getRole()
         );
