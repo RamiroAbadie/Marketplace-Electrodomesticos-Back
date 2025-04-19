@@ -18,23 +18,6 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @PostMapping("/register")
-    public ResponseEntity<User> register(@RequestBody @Valid RegisterRequest request) {
-        User user = userService.register(
-                request.getFirstname(),
-                request.getLastname(),
-                request.getEmail(),
-                request.getPassword()
-        );
-        return ResponseEntity.ok(user);
-    }
-
-    @PostMapping("/login")
-    public ResponseEntity<User> login(@RequestBody @Valid LoginRequest request) {
-        User user = userService.login(request.getEmail(), request.getPassword());
-        return ResponseEntity.ok(user);
-    }
-
     @PutMapping("/{id}")
     public ResponseEntity<User> updateUser(@PathVariable Long id,
                                         @RequestBody @Valid UpdateUserRequest request) {

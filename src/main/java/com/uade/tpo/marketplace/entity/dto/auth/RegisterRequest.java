@@ -1,6 +1,5 @@
 package com.uade.tpo.marketplace.entity.dto.auth;
 
-import com.uade.tpo.marketplace.entity.Role;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
@@ -25,6 +24,4 @@ public class RegisterRequest {
 
     @NotBlank(message = "La contraseña no puede estar vacía")
     private String password;
-
-    private Role role;
 }
