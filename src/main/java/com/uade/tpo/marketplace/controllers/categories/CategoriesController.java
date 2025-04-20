@@ -1,4 +1,4 @@
-package com.uade.tpo.marketplace.controllers;
+package com.uade.tpo.marketplace.controllers.categories;
 
 import com.uade.tpo.exceptions.CategoryDuplicateException;
 import com.uade.tpo.exceptions.CategoryNotFoundException;
