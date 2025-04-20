@@ -2,6 +2,7 @@ package com.uade.tpo.marketplace.service;
 
 import com.uade.tpo.marketplace.entity.Product;
 import com.uade.tpo.marketplace.entity.Category;
+import com.uade.tpo.marketplace.entity.dto.ProductResponse;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -14,7 +15,7 @@ public interface ProductService {
 
     public List<Product> getProductsByCategory(Long categoryId);
 
-    public List<Product> getProductsByPriceRange(BigDecimal min, BigDecimal max);
+    public List<ProductResponse> getProductsByPriceRange(BigDecimal min, BigDecimal max);
 
     public List<Product> getProductsByPriceLess(BigDecimal min);
 

@@ -57,14 +57,14 @@ public class ProductController {
     }
 
     // Filtrar por categoría
-    @GetMapping("/category/{categoryId}")
-    public List<Product> getByCategory(@PathVariable Long categoryId) {
-        return productService.getProductsByCategory(categoryId);
+    @GetMapping("/product/{productId}")
+    public List<Product> getByCategory(@PathVariable Long productId) {
+        return productService.getProductsByCategory(productId);
     }
 
     // Filtrar por rango de precio
     @GetMapping("/price-range")
-    public List<Product> getByPriceRange(@RequestParam BigDecimal min, @RequestParam BigDecimal max) {
+    public List<ProductResponse> getByPriceRange(@RequestParam BigDecimal min, @RequestParam BigDecimal max) {
         return productService.getProductsByPriceRange(min, max);
     }
     // Filtrar por precios menores

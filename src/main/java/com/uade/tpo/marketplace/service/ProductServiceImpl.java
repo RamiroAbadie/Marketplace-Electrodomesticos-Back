@@ -2,6 +2,8 @@ package com.uade.tpo.marketplace.service;
 
 import com.uade.tpo.marketplace.entity.Product;
 import com.uade.tpo.marketplace.entity.Category;
+import com.uade.tpo.marketplace.entity.dto.CategoryResponse;
+import com.uade.tpo.marketplace.entity.dto.ProductResponse;
 import com.uade.tpo.marketplace.repository.OrderItemRepository;
 import com.uade.tpo.marketplace.repository.ProductRepository;
 
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -39,10 +42,30 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.findByCategoryId(categoryId);
     }
 
-    @Override
-    public List<Product> getProductsByPriceRange(BigDecimal min, BigDecimal max) {
-        return productRepository.findByPriceBetween(min, max);
+
+    /// /////////////////////////////
+    ///
+    /// Se agrega esta funcion para obtener el dto de Product (ProductResponse)
+    /// Es necesario extender esto al resto de los GET tanto en esta como en el resto de las clases
+    /// Se devuelve List<ProductResponse> en Controller y Service; Repository traabaja con Product directamente
+    private ProductResponse mapToDto(Product product) {
+        return new ProductResponse(
+                product.getId(),
+                product.getDescription(),
+                product.getPrice(),
+                product.getStock(),
+                product.getCategory().getDescription()
+        );
     }
+
+
+    public List<ProductResponse> getProductsByPriceRange(BigDecimal min, BigDecimal max) {
+        return productRepository.findByPriceBetween(min, max)
+                .stream()
+                .map(this::mapToDto)
+                .collect(Collectors.toList());
+    }
+/// ///////////////////////////////////
 
     public List<Product> getProductsByPriceLess(BigDecimal min) {
         return productRepository.findByPriceLessThan(min);
