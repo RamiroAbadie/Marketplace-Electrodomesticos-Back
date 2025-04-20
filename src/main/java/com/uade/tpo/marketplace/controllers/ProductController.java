@@ -1,7 +1,6 @@
 package com.uade.tpo.marketplace.controllers;
 
 import com.uade.tpo.marketplace.entity.Product;
-import com.uade.tpo.marketplace.entity.dto.CategoryResponse;
 import com.uade.tpo.marketplace.entity.dto.ProductRequest;
 import com.uade.tpo.marketplace.entity.dto.ProductResponse;
 import com.uade.tpo.exceptions.CategoryNotFoundException;
@@ -17,7 +16,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
