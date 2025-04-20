@@ -1,4 +1,4 @@
-package com.uade.tpo.marketplace.controllers;
+package com.uade.tpo.marketplace.controllers.categories;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
