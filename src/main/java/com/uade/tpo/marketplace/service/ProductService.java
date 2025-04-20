@@ -9,21 +9,25 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ProductService {
-    public List<Product> getAllProducts();
+    public List<ProductResponse> getAllProducts();
 
-    public List<Product> getAvailableProducts();
+    public List<ProductResponse> getAvailableProducts();
 
-    public List<Product> getProductsByCategory(Long categoryId);
+    public List<ProductResponse> getProductsByCategory(Long categoryId);
 
     public List<ProductResponse> getProductsByPriceRange(BigDecimal min, BigDecimal max);
 
-    public List<Product> getProductsByPriceLess(BigDecimal min);
+    public List<ProductResponse> getProductsByPriceLess(BigDecimal min);
 
     public Product createProduct(String description, BigDecimal price, Integer stock, Category category);
     
-    public Optional<Product> getProductById(Long id);
+    public Optional<ProductResponse> getProductById(Long id);
+
+    Optional<Product> getEntityById(Long id);
 
     public void deleteProductById(Long id);
 
     public Product save(Product product);
+
+    public ProductResponse mapToDto(Product product);
 }

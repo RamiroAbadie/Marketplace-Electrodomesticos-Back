@@ -1,21 +1,23 @@
 package com.uade.tpo.marketplace.service;
 
+import com.uade.tpo.marketplace.entity.Category;
+import com.uade.tpo.marketplace.entity.dto.CategoryResponse;
+import com.uade.tpo.exceptions.CategoryDuplicateException;
+
 import java.util.List;
 import java.util.Optional;
 
-import com.uade.tpo.exceptions.CategoryDuplicateException;
-import com.uade.tpo.marketplace.entity.Category;
-
-
-
 public interface CategoryService {
-    public List<Category> getCategories(); // ya no usa PageRequest
 
-    public Optional<Category> getCategoryById(Long categoryId);
+    List<Category> getCategories();
 
-    public Category createCategory(String description) throws CategoryDuplicateException;
+    Optional<Category> getCategoryById(Long categoryId);
 
-    public void deleteCategoryById(Long id);
+    Category createCategory(String description) throws CategoryDuplicateException;
 
-    public Category save(Category category);
+    void deleteCategoryById(Long id);
+
+    Category save(Category category);
+
+    CategoryResponse mapToDto(Category category);
 }

@@ -1,6 +1,7 @@
 package com.uade.tpo.marketplace.controllers;
 
 import com.uade.tpo.marketplace.entity.Product;
+import com.uade.tpo.marketplace.entity.dto.CategoryResponse;
 import com.uade.tpo.marketplace.entity.dto.ProductRequest;
 import com.uade.tpo.marketplace.entity.dto.ProductResponse;
 import com.uade.tpo.exceptions.CategoryNotFoundException;
@@ -33,33 +34,20 @@ public class ProductController {
     // Traer todos los productos
     @GetMapping
     public List<ProductResponse> getAllProducts() {
-        List<Product> productos = productService.getAllProducts();
-        List<ProductResponse> responses = new ArrayList<>();
-
-        for (Product p : productos) {
-            responses.add(new ProductResponse(
-                p.getId(),
-                p.getDescription(),
-                p.getPrice(),
-                p.getStock(),
-                p.getCategory().getDescription()
-            ));
-        }
-
-        return responses;
+        return productService.getAllProducts();
     }
 
 
     // Traer productos con stock
     @GetMapping("/available")
-    public List<Product> getAvailableProducts() {
+    public List<ProductResponse> getAvailableProducts() {
         return productService.getAvailableProducts();
     }
 
     // Filtrar por categoría
     @GetMapping("/product/{productId}")
-    public List<Product> getByCategory(@PathVariable Long productId) {
-        return productService.getProductsByCategory(productId);
+    public List<ProductResponse> getByCategory(@PathVariable Long categoryId) {
+        return productService.getProductsByCategory(categoryId);
     }
 
     // Filtrar por rango de precio
@@ -69,7 +57,7 @@ public class ProductController {
     }
     // Filtrar por precios menores
     @GetMapping("/price-less")
-    public List<Product> getByPriceLess(@RequestParam BigDecimal min) {
+    public List<ProductResponse> getByPriceLess(@RequestParam BigDecimal min) {
         return productService.getProductsByPriceLess(min);
     }
 
@@ -89,13 +77,7 @@ public class ProductController {
             categoryOpt.get()
         );
 
-        ProductResponse response = new ProductResponse(
-            saved.getId(),
-            saved.getDescription(),
-            saved.getPrice(),
-            saved.getStock(),
-            saved.getCategory().getDescription()
-        );
+        ProductResponse response = productService.mapToDto(saved);
 
         return ResponseEntity.ok(response);
     }
@@ -103,7 +85,7 @@ public class ProductController {
     // Eliminar un producto por su id
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
-        Optional<Product> product = productService.getProductById(id);
+        Optional<ProductResponse> product = productService.getProductById(id);
         if (product.isEmpty()) {
             return ResponseEntity.notFound().build(); // 404 Not Found
         }
@@ -116,7 +98,7 @@ public class ProductController {
     @PutMapping("/{id}")
     public ResponseEntity<ProductResponse> updateProduct(@PathVariable Long id,
                                                         @RequestBody @Valid ProductRequest productRequest) {
-        Optional<Product> existingProduct = productService.getProductById(id);
+        Optional<Product> existingProduct = productService.getEntityById(id);
         if (existingProduct.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
@@ -126,7 +108,7 @@ public class ProductController {
             throw new CategoryNotFoundException();
         }
 
-        Product updatedProduct = existingProduct.get();
+        Product  updatedProduct = existingProduct.get();
         updatedProduct.setDescription(productRequest.getDescription());
         updatedProduct.setPrice(productRequest.getPrice());
         updatedProduct.setStock(productRequest.getStock());
@@ -134,13 +116,7 @@ public class ProductController {
 
         Product saved = productService.save(updatedProduct);
 
-        ProductResponse response = new ProductResponse(
-            saved.getId(),
-            saved.getDescription(),
-            saved.getPrice(),
-            saved.getStock(),
-            saved.getCategory().getDescription()
-        );
+        ProductResponse response = productService.mapToDto(saved);
 
         return ResponseEntity.ok(response);
     }
