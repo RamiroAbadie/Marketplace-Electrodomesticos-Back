@@ -4,6 +4,7 @@ import com.uade.tpo.marketplace.security.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -25,14 +26,21 @@ public class SecurityConfig {
         public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
                 http
                                 .csrf(AbstractHttpConfigurer::disable)
-                                .authorizeHttpRequests(req -> req.
-                                                requestMatchers("/api/v1/auth/**").permitAll()
-                                                .requestMatchers("/error/**").permitAll() // agregar endpoints permitidos y no permitidos
-                                                .requestMatchers("/api/v1/auth/register").permitAll()
-                                                .requestMatchers("/categories/**").hasAnyAuthority("USER", "ADMIN")
-                                                .requestMatchers("/products/**").hasAnyAuthority("USER", "ADMIN")
-                                                .requestMatchers("/orders/**").hasAnyAuthority("USER", "ADMIN")
-                                                .requestMatchers("/users/**").hasAnyAuthority("ADMIN")
+                                .authorizeHttpRequests(req -> req
+                                                .requestMatchers("/error/**").permitAll()
+                                                // AuthenticationController endpoints
+                                                .requestMatchers("/api/v1/auth/**").permitAll()
+                                                // CategoriesController endpoints
+                                                .requestMatchers("/categories/**").hasAnyAuthority("ADMIN")
+                                                .requestMatchers("/categories").permitAll()
+                                                 // ProductController endpoints
+                                                .requestMatchers("/api/products/**").hasAnyAuthority("ADMIN")
+                                                .requestMatchers(HttpMethod.GET,"/api/products/**").permitAll()
+                                                 // OrderController endpoints
+                                                .requestMatchers("/api/orders/**").hasAnyAuthority("USER", "ADMIN")
+                                                 // UserController endpoints
+                                                .requestMatchers("/api/users/**").hasAnyAuthority("ADMIN")
+                                                .requestMatchers(HttpMethod.PUT,"/api/users/**").hasAnyAuthority("USER")
                                                 .anyRequest()
                                                 .authenticated())
                                 .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))

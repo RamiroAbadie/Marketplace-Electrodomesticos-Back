@@ -50,7 +50,7 @@ public class ProductController {
     }
 
     // Filtrar por categoría
-    @GetMapping("/product/{productId}")
+    @GetMapping("{productId}")
     public List<ProductResponse> getByCategory(@PathVariable Long categoryId) {
         return productService.getProductsByCategory(categoryId);
     }
