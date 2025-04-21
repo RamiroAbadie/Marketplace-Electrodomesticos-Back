@@ -32,5 +32,9 @@ build/
 ### VS Code ###
 .vscode/
 
-##
+##Configuraciones sensibles##
 src/main/resources/application.properties
+
+# Archivos temporales del sistema
+.DS_Store
+Thumbs.db
