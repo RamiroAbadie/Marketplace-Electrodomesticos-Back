@@ -2,7 +2,9 @@ package com.uade.tpo.marketplace.service;
 
 import com.uade.tpo.marketplace.entity.*;
 import com.uade.tpo.marketplace.entity.dto.OrderRequest;
+import com.uade.tpo.marketplace.entity.dto.OrderResponse;
 import com.uade.tpo.marketplace.entity.dto.OrderProductRequest;
+import com.uade.tpo.marketplace.entity.dto.OrderProductResponse;
 import com.uade.tpo.marketplace.repository.OrderRepository;
 import com.uade.tpo.marketplace.repository.ProductRepository;
 import com.uade.tpo.marketplace.repository.UserRepository;
@@ -74,4 +76,31 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Orden no encontrada"));
     }
+
+    @Override
+    public OrderResponse mapToDto(Order order) {
+    // Declaramos la lista de respuestas para los productos de la orden
+    List<OrderProductResponse> itemResponses = new ArrayList<>();
+
+    // Recorremos los items de la orden y los mapeamos a OrderProductResponse
+    for (OrderItem item : order.getItems()) {
+        OrderProductResponse responseItem = new OrderProductResponse(
+            item.getProduct().getId(),
+            item.getProduct().getDescription(),
+            item.getQuantity(),
+            item.getProduct().getCategory().getDescription(),
+            item.getUnitPrice().toString()
+        );
+        itemResponses.add(responseItem); // Agregamos el item a la lista
+    }
+
+    // Retornamos el DTO completo de la orden
+    return new OrderResponse(
+        order.getId(),
+        order.getUser().getId(),
+        order.getUser().getFirstname(),
+        itemResponses
+    );
+    }
+
 }
