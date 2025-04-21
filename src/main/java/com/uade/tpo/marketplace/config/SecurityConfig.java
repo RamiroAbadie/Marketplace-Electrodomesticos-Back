@@ -1,6 +1,5 @@
 package com.uade.tpo.marketplace.config;
 
-import com.uade.tpo.marketplace.entity.Role;
 import com.uade.tpo.marketplace.security.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
