@@ -46,9 +46,12 @@ public class AuthenticationService {
                                 new UsernamePasswordAuthenticationToken(
                                                 request.getEmail(),
                                                 request.getPassword()));
+                // verifica que las credenciales existan en la BD
+                // hace uso de una instancia de AuthenticationManager generada en ApplicationConfig
+                //
 
-                var user = userRepository.findByEmail(request.getEmail())
-                                .orElseThrow();
+                var user = userRepository.findByEmail(request.getEmail()).
+                        orElseThrow();
                 var jwtToken = jwtService.generateToken(user);
                 return AuthenticationResponse.builder()
                                 .accessToken(jwtToken)

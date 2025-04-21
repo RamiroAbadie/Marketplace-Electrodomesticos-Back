@@ -18,23 +18,17 @@ public class JwtService {
     @Value("${application.security.jwt.expiration}")
     private long jwtExpiration;
 
-    public String generateToken(
-            UserDetails userDetails) {
-        return buildToken(userDetails, jwtExpiration);
-    }
-
-    private String buildToken(
-            UserDetails userDetails,
-            long expiration) {
+    public String generateToken(UserDetails userDetails) {
         return Jwts
                 .builder()
-                .subject(userDetails.getUsername()) // prueba@hotmail.com
-                .issuedAt(new Date(System.currentTimeMillis()))
-                .claim("Gisele", "1234567")
-                .expiration(new Date(System.currentTimeMillis() + expiration))
-                .signWith(getSecretKey())
+                .subject(userDetails.getUsername()) // Va como claim "sub"
+                .claim("role", userDetails.getAuthorities()) // Claim personalizado
+                .issuedAt(new Date(System.currentTimeMillis())) // iat
+                .expiration(new Date(System.currentTimeMillis() + jwtExpiration)) // exp
+                .signWith(getSecretKey()) // Firma con secretKey del backend
                 .compact();
     }
+
 
     public boolean isTokenValid(String token, UserDetails userDetails) {
         final String username = extractClaim(token, Claims::getSubject);

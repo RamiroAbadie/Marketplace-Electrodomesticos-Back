@@ -27,11 +27,9 @@ public class SecurityConfig {
                 http
                                 .csrf(AbstractHttpConfigurer::disable)
                                 .authorizeHttpRequests(req -> req.requestMatchers("/api/v1/auth/**").permitAll()
-                                                .requestMatchers("/error/**").permitAll()
-                                                .requestMatchers("/api/auth/**").permitAll() // sacar
-                                                .requestMatchers("/api/categories/**").permitAll() // sacar
-                                                .requestMatchers("/{categoryId}/**").permitAll() // sacar
-                                                .requestMatchers("/categories/**").hasAnyAuthority(Role.USER.name())
+                                                .requestMatchers("/error/**").permitAll() // agregar endpoints permitidos y no permitidos
+                                                .requestMatchers("/api/v1/auth/register").permitAll()
+                                                .requestMatchers("/categories/**").hasAnyAuthority("USER")
                                                 .anyRequest()
                                                 .authenticated())
                                 .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
