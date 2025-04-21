@@ -1,6 +1,7 @@
 package com.uade.tpo.marketplace.service;
 
 import com.uade.tpo.marketplace.entity.Product;
+import com.uade.tpo.marketplace.entity.ProductImage;
 import com.uade.tpo.marketplace.entity.Category;
 import com.uade.tpo.marketplace.entity.dto.ProductResponse;
 import com.uade.tpo.marketplace.repository.OrderItemRepository;
@@ -10,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -24,12 +27,22 @@ public class ProductServiceImpl implements ProductService {
     private OrderItemRepository orderItemRepository;
 
     public ProductResponse mapToDto(Product product) {
+        List<String> imageList = new ArrayList<>();
+
+        if (product.getImages() != null) {
+            for (ProductImage img : product.getImages()) {
+                String base64Image = Base64.getEncoder().encodeToString(img.getImage());
+                imageList.add(base64Image);
+            }
+        }
+
         return new ProductResponse(
-                product.getId(),
-                product.getDescription(),
-                product.getPrice(),
-                product.getStock(),
-                product.getCategory().getDescription()
+            product.getId(),
+            product.getDescription(),
+            product.getPrice(),
+            product.getStock(),
+            product.getCategory().getDescription(),
+            imageList
         );
     }
 

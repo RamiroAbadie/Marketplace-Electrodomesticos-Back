@@ -1,19 +1,23 @@
 package com.uade.tpo.marketplace.controllers;
 
 import com.uade.tpo.marketplace.entity.Product;
+import com.uade.tpo.marketplace.entity.ProductImage;
 import com.uade.tpo.marketplace.entity.dto.ProductRequest;
 import com.uade.tpo.marketplace.entity.dto.ProductResponse;
 import com.uade.tpo.exceptions.CategoryNotFoundException;
 import com.uade.tpo.marketplace.entity.Category;
 import com.uade.tpo.marketplace.service.ProductService;
 
+import java.io.IOException;
 import jakarta.validation.Valid;
 
 import com.uade.tpo.marketplace.repository.CategoryRepository;
+import com.uade.tpo.marketplace.repository.ProductImageRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -28,6 +32,9 @@ public class ProductController {
 
     @Autowired
     private CategoryRepository categoryRepository;
+
+    @Autowired
+    private ProductImageRepository productImageRepository;
 
     // Traer todos los productos
     @GetMapping
@@ -118,4 +125,28 @@ public class ProductController {
 
         return ResponseEntity.ok(response);
     }
+
+    @PostMapping("/{id}/images")
+    public ResponseEntity<Void> uploadImages(@PathVariable Long id,
+            @RequestParam("images") List<MultipartFile> imageFiles){
+        Optional<Product> productOpt = productService.getEntityById(id);
+        if (productOpt.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Product product = productOpt.get();
+
+        for (MultipartFile file : imageFiles) {
+            try {
+                ProductImage img = new ProductImage();
+                img.setProduct(product);
+                img.setImage(file.getBytes()); // acá se maneja el IOException
+                productImageRepository.save(img);
+            } catch (IOException e) {
+                return ResponseEntity.internalServerError().build();
+            }
+        }
+        return ResponseEntity.ok().build();
+    }
+
 }
