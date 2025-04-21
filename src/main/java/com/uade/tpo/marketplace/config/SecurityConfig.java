@@ -25,10 +25,14 @@ public class SecurityConfig {
         public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
                 http
                                 .csrf(AbstractHttpConfigurer::disable)
-                                .authorizeHttpRequests(req -> req.requestMatchers("/api/v1/auth/**").permitAll()
+                                .authorizeHttpRequests(req -> req.
+                                                requestMatchers("/api/v1/auth/**").permitAll()
                                                 .requestMatchers("/error/**").permitAll() // agregar endpoints permitidos y no permitidos
                                                 .requestMatchers("/api/v1/auth/register").permitAll()
-                                                .requestMatchers("/categories/**").hasAnyAuthority("USER")
+                                                .requestMatchers("/categories/**").hasAnyAuthority("USER", "ADMIN")
+                                                .requestMatchers("/products/**").hasAnyAuthority("USER", "ADMIN")
+                                                .requestMatchers("/orders/**").hasAnyAuthority("USER", "ADMIN")
+                                                .requestMatchers("/users/**").hasAnyAuthority("ADMIN")
                                                 .anyRequest()
                                                 .authenticated())
                                 .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
