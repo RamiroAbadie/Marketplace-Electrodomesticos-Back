@@ -1,8 +1,6 @@
 package com.uade.tpo.marketplace.controllers;
 
 import com.uade.tpo.marketplace.entity.User;
-import com.uade.tpo.marketplace.entity.dto.LoginRequest;
-import com.uade.tpo.marketplace.entity.dto.auth.RegisterRequest;
 import com.uade.tpo.marketplace.entity.dto.UpdateUserRequest;
 import com.uade.tpo.marketplace.entity.dto.UserResponse;
 import com.uade.tpo.marketplace.service.UserService;

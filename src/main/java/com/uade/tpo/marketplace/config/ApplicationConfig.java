@@ -1,7 +1,6 @@
 package com.uade.tpo.marketplace.config;
 
 import com.uade.tpo.marketplace.repository.UserRepository;
-import com.uade.tpo.marketplace.security.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
