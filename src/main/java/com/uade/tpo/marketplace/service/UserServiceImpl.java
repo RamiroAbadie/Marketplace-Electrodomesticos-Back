@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService {
 
     @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Override
@@ -33,7 +33,6 @@ public class UserServiceImpl implements UserService {
         user.setFirstname(name);
         user.setLastname(surname);
         user.setEmail(email);
-
         if (password != null && !password.isBlank()) {
             user.setPassword(passwordEncoder.encode(password));
         }
