@@ -19,7 +19,7 @@ public class UserController {
     private UserService userService;
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserResponse> updateUser(
+    public ResponseEntity<?> updateUser(
             @PathVariable Long id,
             @RequestBody @Valid UpdateUserRequest request,
             @AuthenticationPrincipal User authenticatedUser) {
@@ -27,7 +27,9 @@ public class UserController {
         // Solo permitir si es el mismo usuario o si es ADMIN
         if (!authenticatedUser.getId().equals(id) &&
                 !authenticatedUser.getRole().name().equals("ADMIN")) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            return ResponseEntity
+                    .status(HttpStatus.FORBIDDEN)
+                    .body("Acceso denegado");
         }
 
         User user = userService.updateUser(
@@ -50,14 +52,17 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserResponse> getUserById(
+    public ResponseEntity<?> getUserById(
             @PathVariable Long id,
             @AuthenticationPrincipal User authenticatedUser) {
 
         if (!authenticatedUser.getId().equals(id) &&
                 !authenticatedUser.getRole().name().equals("ADMIN")) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            return ResponseEntity
+                    .status(HttpStatus.FORBIDDEN)
+                    .body("Acceso denegado");
         }
+
 
         User user = userService.getUserById(id);
 

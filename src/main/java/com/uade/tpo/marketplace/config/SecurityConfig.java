@@ -31,8 +31,8 @@ public class SecurityConfig {
                                                 // AuthenticationController endpoints
                                                 .requestMatchers("/api/v1/auth/**").permitAll()
                                                 // CategoriesController endpoints
-                                                .requestMatchers("/categories").permitAll()
-                                                .requestMatchers("/categories/**").hasAnyAuthority("ADMIN")
+                                                .requestMatchers(HttpMethod.GET,"/api/categories/**").permitAll()
+                                                .requestMatchers("/api/categories/**").hasAnyAuthority("ADMIN")
                                                  // ProductController endpoints
                                                 .requestMatchers(HttpMethod.GET, "/api/products").hasAuthority("ADMIN")
                                                 .requestMatchers(HttpMethod.GET, "/api/products/**").permitAll()
