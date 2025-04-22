@@ -2,6 +2,7 @@ package com.uade.tpo.marketplace.entity.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
@@ -15,4 +16,7 @@ public class UpdateUserRequest {
 
     @Email(message = "El email debe tener un formato válido")
     private String email;
+
+    @Size(min = 6, message = "La contraseña debe tener al menos 6 caracteres")
+    private String password;
 }

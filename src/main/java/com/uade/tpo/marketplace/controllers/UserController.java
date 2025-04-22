@@ -34,8 +34,9 @@ public class UserController {
                 id,
                 request.getFirstname(),
                 request.getLastname(),
-                request.getEmail()
-        );
+                request.getEmail(),
+                request.getPassword()
+                );
 
         UserResponse response = new UserResponse(
                 user.getId(),
@@ -72,4 +73,3 @@ public class UserController {
     }
 
 }
-
