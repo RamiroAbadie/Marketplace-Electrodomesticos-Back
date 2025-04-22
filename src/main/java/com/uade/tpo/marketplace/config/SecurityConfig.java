@@ -34,9 +34,10 @@ public class SecurityConfig {
                                                 .requestMatchers("/categories/**").hasAnyAuthority("ADMIN")
                                                 .requestMatchers("/categories").permitAll()
                                                  // ProductController endpoints
-                                                .requestMatchers("/api/products/**").hasAnyAuthority("ADMIN")
-                                                .requestMatchers(HttpMethod.GET,"/api/products/**").permitAll()
-                                                 // OrderController endpoints
+                                                .requestMatchers(HttpMethod.GET, "/api/products").hasAuthority("ADMIN")
+                                                .requestMatchers(HttpMethod.GET, "/api/products/**").permitAll()
+                                                .requestMatchers("/api/products/**").hasAuthority("ADMIN")
+                                                // OrderController endpoints
                                                 .requestMatchers("/api/orders/**").hasAnyAuthority("USER", "ADMIN")
                                                  // UserController endpoints
                                                 .requestMatchers("/api/users/**").hasAnyAuthority("ADMIN")

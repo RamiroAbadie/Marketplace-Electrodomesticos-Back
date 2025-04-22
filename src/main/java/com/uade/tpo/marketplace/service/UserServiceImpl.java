@@ -4,10 +4,13 @@ import com.uade.tpo.marketplace.entity.User;
 import com.uade.tpo.marketplace.repository.UserRepository;
 
 import java.util.Optional;
+
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
+@Transactional
 public class UserServiceImpl implements UserService {
 
     @Autowired

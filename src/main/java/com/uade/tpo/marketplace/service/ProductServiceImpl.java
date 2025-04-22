@@ -7,6 +7,7 @@ import com.uade.tpo.marketplace.entity.dto.ProductResponse;
 import com.uade.tpo.marketplace.repository.OrderItemRepository;
 import com.uade.tpo.marketplace.repository.ProductRepository;
 
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class ProductServiceImpl implements ProductService {
 
     @Autowired

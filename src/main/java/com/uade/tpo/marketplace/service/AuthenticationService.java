@@ -7,6 +7,7 @@ import com.uade.tpo.marketplace.entity.dto.auth.AuthenticationResponse;
 import com.uade.tpo.marketplace.entity.dto.auth.RegisterRequest;
 import com.uade.tpo.marketplace.repository.UserRepository;
 import com.uade.tpo.marketplace.security.JwtService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -21,7 +22,7 @@ public class AuthenticationService {
         private final JwtService jwtService;
         private final AuthenticationManager authenticationManager;
 
-        
+        @Transactional
         public AuthenticationResponse register(RegisterRequest request) {
                 // Asegurate de tener importado correctamente el enum Role
                 User user = User.builder()
