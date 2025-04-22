@@ -49,10 +49,19 @@ public class ProductController {
         return productService.getAvailableProducts();
     }
 
+
     // Filtrar por categoría
-    @GetMapping("{productId}")
+    @GetMapping("/category/{categoryId}")
     public List<ProductResponse> getByCategory(@PathVariable Long categoryId) {
         return productService.getProductsByCategory(categoryId);
+    }
+
+    // Filtrar por producto
+    @GetMapping("/{productId}")
+    public ResponseEntity<ProductResponse> getById(@PathVariable Long productId) {
+        return productService.getProductById(productId)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     // Filtrar por rango de precio

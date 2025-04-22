@@ -37,11 +37,10 @@ public class CategoriesController {
 
     @GetMapping("/{categoryId}")
     public ResponseEntity<CategoryResponse> getCategoryById(@PathVariable Long categoryId) {
-        Optional<Category> result = categoryService.getCategoryById(categoryId);
-        if (result.isPresent()) {
-            return ResponseEntity.ok(categoryService.mapToDto(result.get()));
-        }
-        return ResponseEntity.noContent().build();
+        return categoryService.getCategoryById(categoryId)
+                .map(categoryService::mapToDto)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping

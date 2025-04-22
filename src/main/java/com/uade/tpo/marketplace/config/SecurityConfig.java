@@ -40,8 +40,7 @@ public class SecurityConfig {
                                                 // OrderController endpoints
                                                 .requestMatchers("/api/orders/**").hasAnyAuthority("USER", "ADMIN")
                                                  // UserController endpoints
-                                                .requestMatchers(HttpMethod.PUT,"/api/users/**").hasAnyAuthority("USER")
-                                                .requestMatchers("/api/users/**").hasAnyAuthority("ADMIN")
+                                                .requestMatchers("/api/users/**").hasAnyAuthority("USER", "ADMIN")
                                                 .anyRequest()
                                                 .authenticated())
                                 .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))

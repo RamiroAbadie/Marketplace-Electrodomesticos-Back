@@ -8,10 +8,10 @@ import lombok.Data;
 public class UpdateUserRequest {
 
     @NotBlank(message = "El nombre no puede estar vacío")
-    private String name;
+    private String firstname;
 
     @NotBlank(message = "El apellido no puede estar vacío")
-    private String surname;
+    private String lastname;
 
     @Email(message = "El email debe tener un formato válido")
     private String email;

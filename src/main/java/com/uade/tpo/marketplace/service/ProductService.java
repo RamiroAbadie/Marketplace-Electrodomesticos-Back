@@ -21,7 +21,7 @@ public interface ProductService {
 
     public Product createProduct(String description, BigDecimal price, Integer stock, Category category);
     
-    public Optional<ProductResponse> getProductById(Long id);
+    public Optional<ProductResponse> getProductById(Long productId);
 
     Optional<Product> getEntityById(Long id);
 

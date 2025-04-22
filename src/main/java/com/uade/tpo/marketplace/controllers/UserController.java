@@ -6,7 +6,9 @@ import com.uade.tpo.marketplace.entity.dto.UserResponse;
 import com.uade.tpo.marketplace.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -17,23 +19,47 @@ public class UserController {
     private UserService userService;
 
     @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Long id,
-                                        @RequestBody @Valid UpdateUserRequest request) {
+    public ResponseEntity<UserResponse> updateUser(
+            @PathVariable Long id,
+            @RequestBody @Valid UpdateUserRequest request,
+            @AuthenticationPrincipal User authenticatedUser) {
+
+        // Solo permitir si es el mismo usuario o si es ADMIN
+        if (!authenticatedUser.getId().equals(id) &&
+                !authenticatedUser.getRole().name().equals("ADMIN")) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+
         User user = userService.updateUser(
-            id,
-            request.getName(),
-            request.getSurname(),
-            request.getEmail()
+                id,
+                request.getFirstname(),
+                request.getLastname(),
+                request.getEmail()
         );
-        return ResponseEntity.ok(user);
+
+        UserResponse response = new UserResponse(
+                user.getId(),
+                user.getFirstname(),
+                user.getLastname(),
+                user.getEmail(),
+                user.getRole()
+        );
+
+        return ResponseEntity.ok(response);
     }
 
-    // La idea es que sirva para el ADMIN y para que el usuario vea solo SUS propios datos
     @GetMapping("/{id}")
-    public ResponseEntity<UserResponse> getUserById(@PathVariable Long id) {
+    public ResponseEntity<UserResponse> getUserById(
+            @PathVariable Long id,
+            @AuthenticationPrincipal User authenticatedUser) {
+
+        if (!authenticatedUser.getId().equals(id) &&
+                !authenticatedUser.getRole().name().equals("ADMIN")) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+
         User user = userService.getUserById(id);
 
-        // Notar que no devuelve la contrasena ;)
         UserResponse response = new UserResponse(
             user.getId(),
             user.getFirstname(),
