@@ -31,8 +31,8 @@ public class SecurityConfig {
                                                 // AuthenticationController endpoints
                                                 .requestMatchers("/api/v1/auth/**").permitAll()
                                                 // CategoriesController endpoints
-                                                .requestMatchers("/categories/**").hasAnyAuthority("ADMIN")
                                                 .requestMatchers("/categories").permitAll()
+                                                .requestMatchers("/categories/**").hasAnyAuthority("ADMIN")
                                                  // ProductController endpoints
                                                 .requestMatchers(HttpMethod.GET, "/api/products").hasAuthority("ADMIN")
                                                 .requestMatchers(HttpMethod.GET, "/api/products/**").permitAll()
@@ -40,8 +40,8 @@ public class SecurityConfig {
                                                 // OrderController endpoints
                                                 .requestMatchers("/api/orders/**").hasAnyAuthority("USER", "ADMIN")
                                                  // UserController endpoints
-                                                .requestMatchers("/api/users/**").hasAnyAuthority("ADMIN")
                                                 .requestMatchers(HttpMethod.PUT,"/api/users/**").hasAnyAuthority("USER")
+                                                .requestMatchers("/api/users/**").hasAnyAuthority("ADMIN")
                                                 .anyRequest()
                                                 .authenticated())
                                 .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))

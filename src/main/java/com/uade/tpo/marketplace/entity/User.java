@@ -32,9 +32,9 @@ public class User implements UserDetails {
 
     private String firstname;
 
-    @Column(nullable = false, unique = true)
     private String lastname;
 
+    @Column(nullable = false, unique = true)
     private String email;
 
     private String password;
