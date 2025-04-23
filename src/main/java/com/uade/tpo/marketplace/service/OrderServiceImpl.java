@@ -11,6 +11,7 @@ import com.uade.tpo.marketplace.repository.UserRepository;
 
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -31,9 +32,10 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order createOrder(OrderRequest request) {
-        // Paso1: buscamos al usuario que hizo la compra
-        User user = userRepository.findById(request.getUserId())
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+        // Paso1: Obtener al usuario desde el token JWT
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.findByEmail(email)
+        .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
         // Paso2: Creamos el objeto order y lo inicializamos con usuario y array de items vacio
         List<OrderItem> items = new ArrayList<>();
@@ -103,6 +105,36 @@ public class OrderServiceImpl implements OrderService {
         order.getUser().getFirstname(),
         itemResponses
     );
+    }
+
+    @Override
+    public List<Order> getOrdersByUserId(Long userId) {
+        User user = userRepository.findById(userId)
+            .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        return user.getOrders(); // Relación bidireccional
+    }
+
+    @Override
+    public List<OrderResponse> getOrdersResponseByUserId(Long userId) {
+        // Buscamos al usuario
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        // Obtenemos sus órdenes
+        List<Order> orders = user.getOrders();
+
+        // Creamos una lista vacía para las respuestas
+        List<OrderResponse> responses = new ArrayList<>();
+
+        // Recorremos cada orden y la convertimos a DTO
+        for (Order order : orders) {
+            OrderResponse response = mapToDto(order);
+            responses.add(response);
+        }
+
+        // Devolvemos la lista de respuestas
+        return responses;
     }
 
 }

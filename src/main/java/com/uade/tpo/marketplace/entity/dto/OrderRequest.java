@@ -7,7 +7,6 @@ import java.util.List;
 
 /*
 {
-    id: 5
     [
         {id: 5,
         description: "Samsung"
@@ -20,9 +19,6 @@ import java.util.List;
 
 @Data
 public class OrderRequest {
-
-    @NotNull(message = "El ID del usuario es obligatorio")
-    private Long userId;
 
     @NotNull(message = "La lista de productos no puede ser nula")
     private List<OrderProductRequest> items;

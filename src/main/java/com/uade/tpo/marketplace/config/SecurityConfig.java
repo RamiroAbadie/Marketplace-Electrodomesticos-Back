@@ -19,34 +19,41 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-        private final JwtAuthenticationFilter jwtAuthFilter;
-        private final AuthenticationProvider authenticationProvider;
+    private final JwtAuthenticationFilter jwtAuthFilter;
+    private final AuthenticationProvider authenticationProvider;
 
-        @Bean
-        public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-                http
-                                .csrf(AbstractHttpConfigurer::disable)
-                                .authorizeHttpRequests(req -> req
-                                                .requestMatchers("/error/**").permitAll()
-                                                // AuthenticationController endpoints
-                                                .requestMatchers("/api/v1/auth/**").permitAll()
-                                                // CategoriesController endpoints
-                                                .requestMatchers("/categories").permitAll()
-                                                .requestMatchers("/categories/**").hasAnyAuthority("ADMIN")
-                                                 // ProductController endpoints
-                                                .requestMatchers(HttpMethod.GET, "/api/products").hasAuthority("ADMIN")
-                                                .requestMatchers(HttpMethod.GET, "/api/products/**").permitAll()
-                                                .requestMatchers("/api/products/**").hasAuthority("ADMIN")
-                                                // OrderController endpoints
-                                                .requestMatchers("/api/orders/**").hasAnyAuthority("USER", "ADMIN")
-                                                 // UserController endpoints
-                                                .requestMatchers("/api/users/**").hasAnyAuthority("USER", "ADMIN")
-                                                .anyRequest()
-                                                .authenticated())
-                                .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
-                                .authenticationProvider(authenticationProvider)
-                                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+            .csrf(AbstractHttpConfigurer::disable)
+            .authorizeHttpRequests(req -> req
 
-                return http.build();
-        }
+                // Error y autenticación
+                .requestMatchers("/error/**").permitAll()
+                .requestMatchers("/api/v1/auth/**").permitAll()
+
+                // Categorías
+                .requestMatchers("/categories").permitAll()
+                .requestMatchers("/categories/**").hasAuthority("ADMIN")
+
+                // Productos
+                .requestMatchers(HttpMethod.GET, "/api/products/**").permitAll()
+                .requestMatchers("/api/products/**").hasAuthority("ADMIN")
+
+                // Órdenes
+                .requestMatchers(HttpMethod.GET, "/api/orders/user/**").hasAuthority("ADMIN")
+                .requestMatchers("/api/orders/**").hasAnyAuthority("USER", "ADMIN")
+
+                // Usuarios
+                .requestMatchers("/api/users/**").hasAnyAuthority("USER", "ADMIN")
+
+                // Todo lo demás requiere estar autenticado
+                .anyRequest().authenticated()
+            )
+            .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
+            .authenticationProvider(authenticationProvider)
+            .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+
+        return http.build();
+    }
 }
