@@ -27,27 +27,28 @@ public class SecurityConfig {
         http
             .csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(req -> req
-
-                // Error y autenticación
+                // Error y auth
                 .requestMatchers("/error/**").permitAll()
                 .requestMatchers("/api/v1/auth/**").permitAll()
 
-                // Categorías
-                .requestMatchers("/categories").permitAll()
-                .requestMatchers("/categories/**").hasAuthority("ADMIN")
+                // Categories
+                .requestMatchers(HttpMethod.GET, "/api/categories/**").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/categories/**").hasAuthority("ADMIN")
+                .requestMatchers(HttpMethod.PUT, "/api/categories/**").hasAuthority("ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/api/categories/**").hasAuthority("ADMIN")
 
-                // Productos
+                // Products
                 .requestMatchers(HttpMethod.GET, "/api/products/**").permitAll()
                 .requestMatchers("/api/products/**").hasAuthority("ADMIN")
 
-                // Órdenes
+                // Orders
                 .requestMatchers(HttpMethod.GET, "/api/orders/user/**").hasAuthority("ADMIN")
                 .requestMatchers("/api/orders/**").hasAnyAuthority("USER", "ADMIN")
 
-                // Usuarios
+                // Users
                 .requestMatchers("/api/users/**").hasAnyAuthority("USER", "ADMIN")
 
-                // Todo lo demás requiere estar autenticado
+                // Resto de endpoints
                 .anyRequest().authenticated()
             )
             .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
