@@ -14,6 +14,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
+import java.util.List;
+
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -26,38 +28,35 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .csrf(AbstractHttpConfigurer::disable)
+            .cors(cors -> cors.configurationSource(request -> {
+                var corsConfig = new org.springframework.web.cors.CorsConfiguration();
+                corsConfig.setAllowedOrigins(List.of("http://localhost:5173")); // Frontend
+                corsConfig.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
+                corsConfig.setAllowedHeaders(List.of("*"));
+                corsConfig.setAllowCredentials(true);
+                return corsConfig;
+            }))
             .authorizeHttpRequests(req -> req
-                // Error y auth
                 .requestMatchers("/error/**").permitAll()
                 .requestMatchers("/api/v1/auth/**").permitAll()
-
-                // Categories
                 .requestMatchers(HttpMethod.GET, "/api/categories/**").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/categories/**").hasAuthority("ADMIN")
                 .requestMatchers(HttpMethod.PUT, "/api/categories/**").hasAuthority("ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/api/categories/**").hasAuthority("ADMIN")
-
-                // Products
-                 .requestMatchers(HttpMethod.GET, "/api/products").hasAuthority("ADMIN")
-                 .requestMatchers(HttpMethod.GET,
-                                    "/api/products/available",
-                                    "/api/products/category/**",
-                                    "/api/products/price-range",
-                                    "/api/products/price-less",
-                                    "/api/products/{id}"
-                            ).permitAll()
-                            .requestMatchers(HttpMethod.POST, "/api/products/**").hasAuthority("ADMIN")
-                            .requestMatchers(HttpMethod.PUT, "/api/products/**").hasAuthority("ADMIN")
-                            .requestMatchers(HttpMethod.DELETE, "/api/products/**").hasAuthority("ADMIN")
-
-                // Orders
+                .requestMatchers(HttpMethod.GET, "/api/products").permitAll()
+                .requestMatchers(HttpMethod.GET,
+                                "/api/products/available",
+                                "/api/products/category/**",
+                                "/api/products/price-range",
+                                "/api/products/price-less",
+                                "/api/products/{id}"
+                        ).permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/products/**").hasAuthority("ADMIN")
+                .requestMatchers(HttpMethod.PUT, "/api/products/**").hasAuthority("ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/api/products/**").hasAuthority("ADMIN")
                 .requestMatchers(HttpMethod.GET, "/api/orders/user/**").hasAuthority("ADMIN")
                 .requestMatchers("/api/orders/**").hasAnyAuthority("USER", "ADMIN")
-
-                // Users
                 .requestMatchers("/api/users/**").hasAnyAuthority("USER", "ADMIN")
-
-                // Resto de endpoints
                 .anyRequest().authenticated()
             )
             .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
@@ -66,4 +65,5 @@ public class SecurityConfig {
 
         return http.build();
     }
+
 }
