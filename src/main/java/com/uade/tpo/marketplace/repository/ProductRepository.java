@@ -22,5 +22,9 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     // Productos entre dos precios
     List<Product> findByPriceBetween(BigDecimal min, BigDecimal max);
+
+    // Busca “lo que contenga” la palabra clave, sin importar mayúsc/minúsculas
+    List<Product> findByDescriptionContainingIgnoreCase(String keyword);
+
 }
 

@@ -125,4 +125,13 @@ public class ProductServiceImpl implements ProductService {
     public Product save(Product product) {
         return productRepository.save(product);
     }
+
+    @Override
+    public List<ProductResponse> searchProducts(String keyword) {
+        return productRepository.findByDescriptionContainingIgnoreCase(keyword)
+                .stream()
+                .map(this::mapToDto)
+                .collect(Collectors.toList());
+    }
+
 }

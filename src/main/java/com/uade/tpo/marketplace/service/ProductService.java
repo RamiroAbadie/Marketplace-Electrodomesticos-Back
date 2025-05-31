@@ -30,4 +30,7 @@ public interface ProductService {
     public Product save(Product product);
 
     public ProductResponse mapToDto(Product product);
+
+    List<ProductResponse> searchProducts(String keyword);
+
 }

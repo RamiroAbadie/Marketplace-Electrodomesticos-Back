@@ -69,12 +69,18 @@ public class ProductController {
     public List<ProductResponse> getByPriceRange(@RequestParam BigDecimal min, @RequestParam BigDecimal max) {
         return productService.getProductsByPriceRange(min, max);
     }
+
     // Filtrar por precios menores
     @GetMapping("/price-less")
     public List<ProductResponse> getByPriceLess(@RequestParam BigDecimal min) {
         return productService.getProductsByPriceLess(min);
     }
 
+    // Búsqueda por keyword
+    @GetMapping("/search")
+    public List<ProductResponse> searchProducts(@RequestParam("query") String query) {
+        return productService.searchProducts(query);
+    }
 
     // Crear un producto nuevo
     @PostMapping
