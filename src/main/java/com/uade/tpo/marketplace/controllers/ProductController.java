@@ -42,7 +42,7 @@ public class ProductController {
         return productService.getAllProducts();
     }
 
-
+// prueba
     // Traer productos con stock
     @GetMapping("/available")
     public List<ProductResponse> getAvailableProducts() {
