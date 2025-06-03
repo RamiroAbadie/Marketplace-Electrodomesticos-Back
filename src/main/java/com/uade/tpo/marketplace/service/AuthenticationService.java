@@ -2,6 +2,7 @@ package com.uade.tpo.marketplace.service;
 
 import com.uade.tpo.marketplace.entity.Role;
 import com.uade.tpo.marketplace.entity.User;
+import com.uade.tpo.marketplace.entity.dto.UserResponse;
 import com.uade.tpo.marketplace.entity.dto.auth.AuthenticationRequest;
 import com.uade.tpo.marketplace.entity.dto.auth.AuthenticationResponse;
 import com.uade.tpo.marketplace.entity.dto.auth.RegisterRequest;
@@ -44,18 +45,29 @@ public class AuthenticationService {
 
         public AuthenticationResponse authenticate(AuthenticationRequest request) {
                 authenticationManager.authenticate(
-                                new UsernamePasswordAuthenticationToken(
-                                                request.getEmail(),
-                                                request.getPassword()));
-                // verifica que las credenciales existan en la BD
-                // hace uso de una instancia de AuthenticationManager generada en ApplicationConfig
-                //
+                        new UsernamePasswordAuthenticationToken(
+                                request.getEmail(),
+                                request.getPassword()
+                        )
+                );
 
-                var user = userRepository.findByEmail(request.getEmail()).
-                        orElseThrow();
+                var user = userRepository.findByEmail(request.getEmail())
+                        .orElseThrow();
+
                 var jwtToken = jwtService.generateToken(user);
+
+                // Convertir user a UserResponse
+                var userResponse = UserResponse.builder()
+                        .id(user.getId())
+                        .firstname(user.getFirstname())
+                        .lastname(user.getLastname())
+                        .email(user.getEmail())
+                        .role(user.getRole())
+                        .build();
+
                 return AuthenticationResponse.builder()
-                                .accessToken(jwtToken)
-                                .build();
+                        .accessToken(jwtToken)
+                        .user(userResponse)
+                        .build();
         }
 }

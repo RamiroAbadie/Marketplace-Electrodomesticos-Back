@@ -10,7 +10,7 @@
 
 ---
 
-## 🚀 Cómo correr el proyecto
+## 🚀 Cómo correr el proyecto  
 
 1. **Cloná el repositorio**:
 ```bash
