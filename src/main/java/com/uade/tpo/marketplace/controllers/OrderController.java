@@ -1,6 +1,8 @@
 package com.uade.tpo.marketplace.controllers;
 
 import com.uade.tpo.marketplace.entity.Order;
+import com.uade.tpo.marketplace.entity.Role;
+import com.uade.tpo.marketplace.entity.User;
 import com.uade.tpo.marketplace.entity.dto.OrderRequest;
 import com.uade.tpo.marketplace.entity.dto.OrderResponse;
 import com.uade.tpo.marketplace.service.OrderService;
@@ -9,6 +11,7 @@ import jakarta.validation.Valid;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -54,11 +57,19 @@ public class OrderController {
         return ResponseEntity.ok(response);
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<OrderResponse>> getOrdersByUser(@PathVariable Long userId) {
+    public ResponseEntity<List<OrderResponse>> getOrdersByUser(@PathVariable Long userId, Authentication authentication) {
+        User user = (User) authentication.getPrincipal();
+        System.out.println("Authenticated user ID: " + user.getId());
+        System.out.println("Requested user ID: " + userId);
+
+        if (!user.getId().equals(userId) && !user.getRole().equals(Role.ADMIN)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+
         List<OrderResponse> responses = orderService.getOrdersResponseByUserId(userId);
         return ResponseEntity.ok(responses);
     }
+
 
 }
