@@ -1,9 +1,12 @@
 package com.uade.tpo.marketplace.service;
 
 import com.uade.tpo.marketplace.entity.User;
+import com.uade.tpo.marketplace.entity.dto.UserResponse;
 import com.uade.tpo.marketplace.repository.UserRepository;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -44,6 +47,18 @@ public class UserServiceImpl implements UserService {
         // Estamos usando un método que ya viene implementado por Spring Data JPA
         return userRepository.findById(id)
             .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+    }
+
+    @Override
+    public List<UserResponse> findAll() {
+        return userRepository.findAll().stream()
+                .map(u -> new UserResponse(
+                        u.getId(),
+                        u.getFirstname(),
+                        u.getLastname(),
+                        u.getEmail(),
+                        u.getRole()))
+                .collect(Collectors.toList());
     }
 
 }

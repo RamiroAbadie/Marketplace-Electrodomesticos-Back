@@ -2,8 +2,11 @@ package com.uade.tpo.marketplace.service;
 
 import com.uade.tpo.marketplace.entity.Product;
 import com.uade.tpo.marketplace.entity.ProductImage;
+import com.uade.tpo.exceptions.CategoryNotFoundException;
 import com.uade.tpo.marketplace.entity.Category;
+import com.uade.tpo.marketplace.entity.dto.ProductRequest;
 import com.uade.tpo.marketplace.entity.dto.ProductResponse;
+import com.uade.tpo.marketplace.repository.CategoryRepository;
 import com.uade.tpo.marketplace.repository.OrderItemRepository;
 import com.uade.tpo.marketplace.repository.ProductRepository;
 
@@ -27,6 +30,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private OrderItemRepository orderItemRepository;
+
+    @Autowired
+    private CategoryRepository categoryRepository;
 
     public ProductResponse mapToDto(Product product) {
         List<String> imageList = new ArrayList<>();
@@ -134,4 +140,13 @@ public class ProductServiceImpl implements ProductService {
                 .collect(Collectors.toList());
     }
 
+    private Category resolveCategory(ProductRequest req) {
+        if (req.getCategoryId() != null)
+            return categoryRepository.findById(req.getCategoryId())
+                .orElseThrow(() -> new CategoryNotFoundException(req.getCategoryId()));
+        if (req.getCategoryDescription() != null)
+            return categoryRepository.findByDescription(req.getCategoryDescription())
+                .orElseThrow(() -> new CategoryNotFoundException(req.getCategoryDescription()));
+        throw new IllegalArgumentException("Debe especificar categoría");
+    }
 }
