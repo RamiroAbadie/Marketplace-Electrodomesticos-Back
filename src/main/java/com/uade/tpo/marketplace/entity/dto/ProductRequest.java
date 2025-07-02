@@ -23,4 +23,8 @@ public class ProductRequest {
     private Long categoryId;
 
     private String categoryDescription;
+
+    @Min(0) 
+    @Max(100)
+    private Double discount;
 }

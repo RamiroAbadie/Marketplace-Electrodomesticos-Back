@@ -50,7 +50,8 @@ public class ProductServiceImpl implements ProductService {
             product.getPrice(),
             product.getStock(),
             product.getCategory().getDescription(),
-            imageList
+            imageList,
+            product.getDiscount()
         );
     }
 
@@ -95,12 +96,15 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product createProduct(String description, BigDecimal price, Integer stock, Category category) {
+    public Product createProduct(String description, BigDecimal price, Integer stock, 
+                                Category category, Double discount) 
+    {
         Product product = new Product();
         product.setDescription(description);
         product.setPrice(price);
         product.setStock(stock);
         product.setCategory(category);
+        product.setDiscount(discount != null ? discount : 0.0);
         return productRepository.save(product);
     }
 

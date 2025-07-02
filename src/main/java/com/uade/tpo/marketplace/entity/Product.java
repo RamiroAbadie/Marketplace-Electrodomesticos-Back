@@ -37,4 +37,7 @@ public class Product {
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<ProductImage> images;
 
+    @Column(nullable = false)
+    private Double discount = 0.0; // % de 0 a 100
+
 }

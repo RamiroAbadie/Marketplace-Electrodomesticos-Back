@@ -94,7 +94,8 @@ public class ProductController {
             productRequest.getDescription(),
             productRequest.getPrice(),
             productRequest.getStock(),
-            categoryOpt.get()
+            categoryOpt.get(),
+            productRequest.getDiscount()
         );
 
         ProductResponse response = productService.mapToDto(saved);
@@ -133,6 +134,7 @@ public class ProductController {
         updatedProduct.setPrice(productRequest.getPrice());
         updatedProduct.setStock(productRequest.getStock());
         updatedProduct.setCategory(categoryOpt.get());
+        updatedProduct.setDiscount(productRequest.getDiscount());
 
         Product saved = productService.save(updatedProduct);
 

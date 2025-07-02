@@ -13,13 +13,15 @@ public class ProductResponse {
     private Integer stock;
     private String categoryDescription;
     private List<String> images;
+    private Double discount;
 
-    public ProductResponse(Long id, String description, BigDecimal price, Integer stock, String categoryDescription, List<String> images) {
+    public ProductResponse(Long id, String description, BigDecimal price, Integer stock, String categoryDescription, List<String> images, Double discount) {
         this.id = id;
         this.description = description;
         this.price = price;
         this.stock = stock;
         this.categoryDescription = categoryDescription;
         this.images = images;
+        this.discount = discount;
     }
 }
