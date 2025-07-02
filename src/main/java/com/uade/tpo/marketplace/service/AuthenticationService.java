@@ -37,9 +37,18 @@ public class AuthenticationService {
                 userRepository.save(user);
             
                 String jwtToken = jwtService.generateToken(user);
+
+                UserResponse userResponse = UserResponse.builder()
+                        .id(user.getId())
+                        .firstname(user.getFirstname())
+                        .lastname(user.getLastname())
+                        .email(user.getEmail())
+                        .role(user.getRole())
+                        .build();
             
                 return AuthenticationResponse.builder()
                         .accessToken(jwtToken)
+                        .user(userResponse)
                         .build();
         }
 
